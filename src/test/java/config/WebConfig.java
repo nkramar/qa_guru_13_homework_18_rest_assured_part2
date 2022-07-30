@@ -23,8 +23,5 @@ public interface WebConfig extends Config {
     @DefaultValue("/")
     String getSomeUrl();
 
-    @Key("searchUrl")
-    @DefaultValue("search?q=")
-    String getSearchUrl();
 
 }

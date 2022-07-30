@@ -12,9 +12,11 @@ import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static helpers.RestAssuredListener.withCustomTemplates;
 import static io.restassured.RestAssured.given;
 
@@ -37,11 +39,11 @@ public class TestBase {
           login = aConfig.emailValue(),
           password = aConfig.passwordValue(),
           authCookieName = "NOPCOMMERCE.AUTH",
-          reqContentType = "application/x-www-form-urlencoded; charset=UTF-8",
-          product = "camera",
-          searchUrl = webConfig.getSearchUrl() + product;
+          reqContentType = "application/x-www-form-urlencoded", /*; charset=UTF-8*/
+          product = "camera";
 
-  String getCookie() {
+
+  String getCookies() {
     return given()
             .filter(withCustomTemplates())
             .contentType(reqContentType)
@@ -56,11 +58,15 @@ public class TestBase {
             .extract().cookie(authCookieName);
   }
 
+  public void setCookies() {
+    Cookie ck = new Cookie(authCookieName, getCookies());
+    getWebDriver().manage().addCookie(ck);
+  }
+
   @BeforeAll
   static void configure() {
     System.setProperty("launch", "remote");
     Configuration.remote = launchConfig.getRemoteUrl();
-    // -Dlaunch=remote
     Configuration.browser = launchConfig.getBrowser();
     Configuration.browserSize = launchConfig.getBrowserSize();
     Configuration.browserVersion = launchConfig.getBrowserVersion();
