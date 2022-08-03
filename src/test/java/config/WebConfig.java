@@ -19,9 +19,9 @@ public interface WebConfig extends Config {
     @DefaultValue("/register")
     String getRegisterUrl();
 
-    @Key("someUrl")
-    @DefaultValue("/")
-    String getSomeUrl();
+    @Key("userInfoUrl")
+    @DefaultValue("/customer/info")
+    String getUserInfoUrl();
 
 
 }

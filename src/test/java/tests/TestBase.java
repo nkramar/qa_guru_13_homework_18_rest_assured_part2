@@ -12,15 +12,17 @@ import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.openqa.selenium.Cookie;
+
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
-import static helpers.RestAssuredListener.withCustomTemplates;
-import static io.restassured.RestAssured.given;
+
 
 public class TestBase {
+  TestData testData = new TestData();
+  EditUserData editUserData = new EditUserData();
+  NewUserData newUserData = new NewUserData();
+
   static AuthConfig aConfig = ConfigFactory
           .create(AuthConfig.class, System.getProperties());
 
@@ -35,33 +37,11 @@ public class TestBase {
           loginUrl = webConfig.getLoginUrl(),
           minPageUrl = webConfig.getMinPageUrl(),
           registerUrl = webConfig.getRegisterUrl(),
-          someUrl = webConfig.getSomeUrl(),
+          userInfoUrl = webConfig.getUserInfoUrl(),
           login = aConfig.emailValue(),
-          password = aConfig.passwordValue(),
-          authCookieName = "NOPCOMMERCE.AUTH",
-          reqContentType = "application/x-www-form-urlencoded", /*; charset=UTF-8*/
-          product = "camera";
+          password = aConfig.passwordValue();
 
 
-  String getCookies() {
-    return given()
-            .filter(withCustomTemplates())
-            .contentType(reqContentType)
-            .formParam("Email", login)
-            .formParam("Password", password)
-            .log().all()
-            .when()
-            .post(loginUrl)
-            .then()
-            .log().all()
-            .statusCode(302)
-            .extract().cookie(authCookieName);
-  }
-
-  public void setCookies() {
-    Cookie ck = new Cookie(authCookieName, getCookies());
-    getWebDriver().manage().addCookie(ck);
-  }
 
   @BeforeAll
   static void configure() {
