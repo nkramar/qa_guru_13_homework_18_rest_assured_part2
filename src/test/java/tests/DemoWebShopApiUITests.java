@@ -4,7 +4,6 @@ import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
-
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
@@ -12,7 +11,6 @@ import static com.codeborne.selenide.Selenide.open;
 import static helpers.RestAssuredListener.withCustomTemplates;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-
 
 public class DemoWebShopApiUITests extends TestBase {
 
@@ -71,7 +69,7 @@ public class DemoWebShopApiUITests extends TestBase {
                       .statusCode(302)
                       .extract().cookie(editUserData.authorizationCookieName);
 
-              step("Changing user name vie API",
+              step("Changing user name via API",
                       () -> {
                         String newLocationUrl = given()
                                 .filter(withCustomTemplates())
